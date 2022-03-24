@@ -1,0 +1,14 @@
+{
+    "name": "@media-stream/mixer",
+    "version": "0.0.1",
+    "description": "@media-stream/mixer",
+    "author": "yzydeveloper",
+    "license": "MIT",
+    "main": "src/index.ts",
+    "types": "dist/index.d.ts",
+    "module": "dist/index.mjs",
+    "scripts": {
+        "build": "tsup-node",
+        "dev": "tsup-node --watch"
+    }
+}
