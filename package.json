@@ -6,9 +6,9 @@
   "author": "yzydeveloper",
   "license": "MIT",
   "devDependencies": {
-    "@antfu/eslint-config": "0.18.9",
-    "eslint": "8.11.0",
-    "tsup": "5.12.1",
-    "typescript": "4.6.2"
+    "@yzydeveloper/eslint-config": "^0.1.2",
+		"eslint": "^7.23.0",
+    "tsup": "4.8.21",
+		"typescript": "^4.2.3"
   }
 }
