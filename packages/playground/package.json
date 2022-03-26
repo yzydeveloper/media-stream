@@ -1,0 +1,11 @@
+{
+    "name": "@media-stream/playground",
+    "version": "0.0.1",
+    "description": "@media-stream/playground",
+    "author": "yzydeveloper",
+    "license": "MIT",
+    "dependencies": {
+        "@media-stream/mixer":"0.0.1",
+        "@media-stream/recorder":"0.0.1"
+    }
+}

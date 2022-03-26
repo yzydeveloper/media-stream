@@ -2,13 +2,17 @@
   "name": "media-stream",
   "version": "0.0.1",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build": "pnpm run build -C packages/mixer & npm run build -C packages/recorder",
+    "dev": "pnpm -r --filter . --parallel run dev"
+  },
   "author": "yzydeveloper",
   "license": "MIT",
   "devDependencies": {
     "@yzydeveloper/eslint-config": "^0.1.2",
-		"eslint": "^7.23.0",
-    "tsup": "4.8.21",
-		"typescript": "^4.2.3"
+    "eslint": "^8.11.0",
+    "pnpm": "^6.32.3",
+    "tsup": "^5.12.1",
+    "typescript": "^4.6.3"
   }
 }
