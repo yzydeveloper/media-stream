@@ -9,7 +9,7 @@
   "author": "yzydeveloper",
   "license": "MIT",
   "devDependencies": {
-    "@yzydeveloper/eslint-config": "^0.1.2",
+    "@yzydeveloper/eslint-config": "^0.1.4",
     "eslint": "^8.11.0",
     "pnpm": "^6.32.3",
     "tsup": "^5.12.1",
