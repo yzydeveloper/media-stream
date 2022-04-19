@@ -29,25 +29,25 @@ export class Recorder {
         return this._blobs
     }
 
-    constructor(stream: MediaStream, options: RecorderOptions) {
+    constructor(stream: MediaStream, options?: RecorderOptions) {
         this.setOptions(stream, options)
     }
 
-    private setOptions(stream: MediaStream, options: RecorderOptions) {
+    private setOptions(stream: MediaStream, options?: RecorderOptions) {
         this.stream = stream
-        this.recorderOptions = options
-        this.mediaSource = new MediaSource()
+        this.recorderOptions = options ?? {}
+        this.createMediaSource()
         this.createMediaRecorder()
     }
 
     attachMedia(media: HTMLMediaElement) {
         this._media = media
-        this.mediaSource?.addEventListener('sourceopen', this.mediaSourceOpen)
-        this.mediaSource?.addEventListener('sourceended', this.mediaSourceEnded)
-        this.mediaSource?.addEventListener('sourceclose', this.mediaSourceClose)
+        if (this.mediaSource) {
+            this._media.src = URL.createObjectURL(this.mediaSource)
+        }
     }
 
-    start(timeslice: RecorderOptions['timeslice']) {
+    start(timeslice?: RecorderOptions['timeslice']) {
         this.timeslice = timeslice ?? 10
         this.mediaRecorder?.start(this.timeslice)
     }
@@ -59,14 +59,27 @@ export class Recorder {
             mimeType,
             ...recorderOptions
         })
+        this.mediaRecorder.ondataavailable = (e) => {
+            const blob = e.data
+            if (blob.size > 0) {
+                const reader = new FileReader()
+                this._blobs.push(blob)
+                reader.readAsArrayBuffer(blob)
+                reader.onloadend = () => {
+                    if(reader.result && reader.result instanceof ArrayBuffer) {
+                        this.sourceBuffer?.appendBuffer(reader.result)
+                    }
+                }
+            }
+        }
     }
 
     private createSourceBuffer() {
         if (!this.mediaSource || !this.mimeType) return
         this.sourceBuffer = this.mediaSource?.addSourceBuffer(this.mimeType)
-        this.sourceBuffer.addEventListener('updatestart', this.sbUpdateStart)
-        this.sourceBuffer.addEventListener('updateend', this.sbUpdateEnd)
-        this.sourceBuffer.addEventListener('error', this.sbUpdateError)
+        this.sourceBuffer.addEventListener('updatestart', this.sbUpdateStart.bind(this))
+        this.sourceBuffer.addEventListener('updateend', this.sbUpdateEnd.bind(this))
+        this.sourceBuffer.addEventListener('error', this.sbUpdateError.bind(this))
     }
 
     private sbUpdateStart() {
@@ -81,13 +94,17 @@ export class Recorder {
         console.log('[recorder]: source buffer error')
     }
 
+    private createMediaSource() {
+        this.mediaSource = new MediaSource()
+        this.mediaSource.addEventListener('sourceopen', this.mediaSourceOpen.bind(this))
+        this.mediaSource.addEventListener('sourceended', this.mediaSourceEnded.bind(this))
+        this.mediaSource.addEventListener('sourceclose', this.mediaSourceClose.bind(this))
+    }
+
     private mediaSourceOpen() {
         if (!this.mediaSource || !this.mimeType) return
         console.log('[recorder]: Media source opened')
         this.createSourceBuffer()
-        if (this.media) {
-            this.media.src = URL.createObjectURL(this.mediaSource)
-        }
     }
 
     private mediaSourceEnded() {
