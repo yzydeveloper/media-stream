@@ -1,5 +1,6 @@
 export interface RecorderOptions extends MediaRecorderOptions {
     timeslice?: number
+    isDebug?: boolean
 }
 
 export class Recorder {
@@ -20,6 +21,10 @@ export class Recorder {
     private mimeType: string | null = 'video/webm;codecs=opus,vp8'
 
     private recorderOptions: RecorderOptions | null = null
+
+    private get isDebug() {
+        return this.recorderOptions?.isDebug
+    }
 
     get media() {
         return this._media
@@ -66,7 +71,7 @@ export class Recorder {
                 this._blobs.push(blob)
                 reader.readAsArrayBuffer(blob)
                 reader.onloadend = () => {
-                    if(reader.result && reader.result instanceof ArrayBuffer) {
+                    if (reader.result && reader.result instanceof ArrayBuffer) {
                         this.sourceBuffer?.appendBuffer(reader.result)
                     }
                 }
@@ -83,15 +88,15 @@ export class Recorder {
     }
 
     private sbUpdateStart() {
-        console.log('[recorder]: source buffer updatestart')
+        this.isDebug && console.log('[recorder]: source buffer updatestart')
     }
 
     private sbUpdateEnd() {
-        console.log('[recorder]: source buffer updateend')
+        this.isDebug && console.log('[recorder]: source buffer updateend')
     }
 
     private sbUpdateError() {
-        console.log('[recorder]: source buffer error')
+        this.isDebug && console.log('[recorder]: source buffer error')
     }
 
     private createMediaSource() {
@@ -103,15 +108,15 @@ export class Recorder {
 
     private mediaSourceOpen() {
         if (!this.mediaSource || !this.mimeType) return
-        console.log('[recorder]: Media source opened')
+        this.isDebug && console.log('[recorder]: Media source opened')
         this.createSourceBuffer()
     }
 
     private mediaSourceEnded() {
-        console.log('[recorder]: Media source ended')
+        this.isDebug && console.log('[recorder]: Media source ended')
     }
 
     private mediaSourceClose() {
-        console.log('[recorder]: Media source close')
+        this.isDebug && console.log('[recorder]: Media source close')
     }
 }
