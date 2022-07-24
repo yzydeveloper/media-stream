@@ -22,6 +22,12 @@ export class Recorder {
 
     private recorderOptions: RecorderOptions | null = null
 
+    private queue:ArrayBuffer[] = []
+
+    constructor(stream: MediaStream, options?: RecorderOptions) {
+        this.setOptions(stream, options)
+    }
+
     private get isDebug() {
         return this.recorderOptions?.isDebug
     }
@@ -32,10 +38,6 @@ export class Recorder {
 
     get blobs() {
         return this._blobs
-    }
-
-    constructor(stream: MediaStream, options?: RecorderOptions) {
-        this.setOptions(stream, options)
     }
 
     private setOptions(stream: MediaStream, options?: RecorderOptions) {
@@ -71,8 +73,13 @@ export class Recorder {
                 this._blobs.push(blob)
                 reader.readAsArrayBuffer(blob)
                 reader.onloadend = () => {
+                    reader.onloadend = null
                     if (reader.result && reader.result instanceof ArrayBuffer) {
-                        this.sourceBuffer?.appendBuffer(reader.result)
+                        if (this.sourceBuffer?.updating || this.queue.length) {
+                            this.queue.push(reader.result)
+                        } else {
+                            this.sourceBuffer?.appendBuffer(reader.result)
+                        }
                     }
                 }
             }
@@ -93,6 +100,10 @@ export class Recorder {
 
     private sbUpdateEnd() {
         this.isDebug && console.log('[recorder]: source buffer updateend')
+        const buffer = this.queue.shift()
+        if(buffer && !this.sourceBuffer?.updating) {
+            this.sourceBuffer?.appendBuffer(buffer)
+        }
     }
 
     private sbUpdateError() {
