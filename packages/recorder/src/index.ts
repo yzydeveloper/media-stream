@@ -51,6 +51,11 @@ export class Recorder {
         this._media = media
         if (this.mediaSource) {
             this._media.src = URL.createObjectURL(this.mediaSource)
+            this._media.addEventListener('progress', () => {
+                if(this._media?.readyState === 2) {
+                    this._media.currentTime += 0.1
+                }
+            })
         }
     }
 
