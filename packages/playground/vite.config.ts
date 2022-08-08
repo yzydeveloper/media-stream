@@ -1,9 +1,33 @@
+import type { Pages, Rewrite } from 'vite-plugin-mpa-plus'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { readdirSync } from 'fs'
+import mpaPlugin from 'vite-plugin-mpa-plus'
+
+const rewrites:Rewrite[] = []
+const entrys = readdirSync('./src/app')
+const pages = entrys.reduce<Pages>((result, pageName) => {
+    result[pageName] = {
+        filename: `/pages/${pageName}.html`,
+        template: `src/app/${pageName}/index.html`
+    }
+    rewrites.push({
+        from: new RegExp(`^/${pageName}$`),
+        to: `/pages/${pageName}.html`
+    })
+    return result
+}, {})
 
 export default defineConfig({
-    resolve: {
-        extensions: ['.vue']
+    server: {
+        host: true,
+        hmr: true
     },
-    plugins: [vue()]
+    plugins: [
+        mpaPlugin({
+            pages,
+            historyApiFallback: {
+                rewrites
+            }
+        })
+    ]
 })
