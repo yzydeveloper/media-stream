@@ -3,13 +3,16 @@ export interface MixerOptions {
     height: number
     fps: number
 }
-
 export interface AttachStreamOptions {
+    sx: number
+    sy: number
+    swidth: number
+    sheight: number
     x: number
     y: number
-    z: number
     width: number
     height: number
+    z: number
     muted: boolean
 }
 export interface StreamItem extends AttachStreamOptions {
@@ -80,15 +83,20 @@ export class Mixer {
         element.muted = true
         element.playsInline = true
         element.srcObject = stream
+        // this.audioContext?.resume()
         element.play().catch(null)
 
         const worker: StreamItem = {
             id: stream?.id,
+            sx: options?.sx || 0,
+            sy: options?.sy || 0,
+            swidth: options?.swidth || options?.width || this.width,
+            sheight: options?.sheight || options?.height || this.height,
             x: options?.x || 0,
             y: options?.y || 0,
+            width: options?.width || options?.swidth || this.width,
+            height: options?.height || options?.sheight || this.height,
             z: options?.z || 0,
-            width: options?.width || this.width,
-            height: options?.height || this.height,
             muted: options?.muted || false,
             videoTracks,
             audioTracks,
@@ -127,8 +135,8 @@ export class Mixer {
             this.ctx?.fillRect(0, 0, this.width, this.height)
         } else {
             this.streams.forEach(stream => {
-                const { element, x, y, width, height } = stream
-                this.ctx?.drawImage(element, x, y, width, height)
+                const { element, sx, sy, swidth, sheight, x, y, width, height } = stream
+                this.ctx?.drawImage(element, sx, sy, swidth, sheight, x, y, width, height)
             })
         }
         this.timer = setTimeout(this.draw.bind(this), this.fps)
