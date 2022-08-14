@@ -14,9 +14,36 @@
             </nav>
         </header>
         <div class="content">
+            <h1>Mixer example</h1>
+            <h2>Combined video</h2>
+            <video id="combined-video" muted controls autoplay playsinline></video>
         </div>
         <script type="module">
+            import { Mixer } from '@media-stream/mixer'
             import '../../style.css'
+
+            // combined video
+            const mixer = new Mixer()
+            navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true
+            }).then((mediaStream => {
+                mixer.attachStream(mediaStream, {
+                    swidth: 640,
+                    sheight: 480,
+                    width: 720,
+                    height: 405
+                })
+                mixer.attachStream(mediaStream, {
+                    swidth: 640,
+                    sheight: 480,
+                    width: 720 / 2,
+                    height: 405 / 2
+                })
+                mixer.start()
+                const video = document.querySelector('#combined-video')
+                video.srcObject = mixer.media
+            }))
         </script>
     </body>
 </html>
