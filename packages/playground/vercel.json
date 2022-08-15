@@ -2,12 +2,12 @@
     "cleanUrls": true,
     "rewrites": [
         {
-            "source": "/mixer",
-            "destination": "/mixer.html"
+            "source": "mixer",
+            "destination": "mixer.html"
         },
         {
-            "source": "/recorder",
-            "destination": "/recorder.html"
+            "source": "recorder",
+            "destination": "recorder.html"
         }
     ]
 }
