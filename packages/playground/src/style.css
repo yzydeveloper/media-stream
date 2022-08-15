@@ -4,11 +4,8 @@
 
 body {
     margin                 : 0;
-    font-family            : Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing : antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color                  : #2c3e50;
-    line-height            : 1.4;
 }
 
 html,
@@ -32,7 +29,7 @@ nav a {
     align-items: center;
     padding    : 0 12px;
     line-height: 72px;
-    font-size  : 14px;
+    font-size  : 16px;
     font-weight: 500;
     color      : #213547;
     transition : color .25s;
@@ -41,6 +38,11 @@ nav a {
 nav a.active,
 nav a:hover {
     color: #646cff;
+}
+
+#github{
+    margin-left: auto;
+    margin-right: 420px;
 }
 
 .content {
