@@ -7,12 +7,12 @@ const rewrites:Rewrite[] = []
 const entrys = readdirSync('./src/app')
 const pages = entrys.reduce<Pages>((result, pageName) => {
     result[pageName] = {
-        filename: `/pages/${pageName}.html`,
+        filename: `/${pageName}.html`,
         template: `src/app/${pageName}/index.html`
     }
     rewrites.push({
         from: new RegExp(`^/${pageName}$`),
-        to: `/pages/${pageName}.html`
+        to: `/${pageName}.html`
     })
     return result
 }, {})
