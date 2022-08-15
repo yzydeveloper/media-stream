@@ -11,7 +11,9 @@ npm i -D @media-stream/mixer
 ```
 ### Usage
 
-[Mixer Playground](./packages/playground/src/app/mixer/index.html)
+[Local Mixer Playground](./packages/playground/src/app/mixer/index.html)
+
+[Online Mixer Playground](https://media-stream.vercel.app/mixer)
 
 ```typescript
 import { Mixer } from '@media-stream/mixer'
@@ -24,8 +26,27 @@ mixer.start()
 mixer.stop()
 ```
 
-
-
-
-
 ## Recorder
+
+> Record fragmentation with MediaRecorder and attach to MediaSource
+
+### Install
+
+```bash
+npm i -D @media-stream/recorder
+```
+
+### Usage
+
+[Local Recorder Playground](./packages/playground/src/app/mixer/index.html)
+
+[Online Recorder Playground](https://media-stream.vercel.app/recorder)
+
+```typescript
+import { Recorder } from '@media-stream/recorder'
+
+const recorder = new Recorder()
+
+recorder.attachMedia(recordVideo)
+recorder.start()
+```
