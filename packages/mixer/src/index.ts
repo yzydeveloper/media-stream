@@ -139,7 +139,7 @@ export class Mixer {
                 this.ctx?.drawImage(element, sx, sy, swidth, sheight, x, y, width, height)
             })
         }
-        this.timer = setTimeout(this.draw.bind(this), this.fps)
+        this.timer = window.setTimeout(this.draw.bind(this), this.fps)
     }
 
     start() {
