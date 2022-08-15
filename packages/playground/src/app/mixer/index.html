@@ -17,26 +17,29 @@
             <h1>Mixer example</h1>
             <h2>Combined video</h2>
             <video id="combined-video" muted controls autoplay playsinline></video>
+            <h2>Crop video</h2>
+            <video id="crop-video" muted controls autoplay playsinline></video>
         </div>
         <script type="module">
             import { Mixer } from '@media-stream/mixer'
             import '../../style.css'
 
             // combined video
-            const mixer = new Mixer()
             navigator.mediaDevices.getUserMedia({
-                audio: true,
-                video: true
+                video: true,
+                audio: true
             }).then((mediaStream => {
+                const mixer = new Mixer()
+                const streamSettings = mediaStream.getVideoTracks()?.[0].getSettings()
                 mixer.attachStream(mediaStream, {
-                    swidth: 640,
-                    sheight: 480,
+                    swidth: streamSettings.width,
+                    sheight: streamSettings.height,
                     width: 720,
                     height: 405
                 })
                 mixer.attachStream(mediaStream, {
-                    swidth: 640,
-                    sheight: 480,
+                    swidth: streamSettings.width,
+                    sheight: streamSettings.height,
                     width: 720 / 2,
                     height: 405 / 2
                 })
@@ -44,6 +47,39 @@
                 const video = document.querySelector('#combined-video')
                 video.srcObject = mixer.media
             }))
+
+            // crop-video
+            Promise.all([
+                navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                }),
+                navigator.mediaDevices.getDisplayMedia({
+                    video: true,
+                    audio: true
+                })
+            ]).then(([stream1, stream2]) => {
+                const mixer = new Mixer()
+                const stream1Settings = stream1.getVideoTracks()?.[0].getSettings()
+                mixer.attachStream(stream1, {
+                    swidth: stream1Settings.width,
+                    sheight: stream1Settings.height,
+                    width: 720,
+                    height: 405
+                })
+                const stream2Settings = stream2.getVideoTracks()?.[0].getSettings()
+                mixer.attachStream(stream2, {
+                    sx: 512,
+                    sy: 240,
+                    swidth: stream2Settings.width,
+                    sheight: stream2Settings.height,
+                    width: 480,
+                    height: 270
+                })
+                mixer.start()
+                const video = document.querySelector('#crop-video')
+                video.srcObject = mixer.media
+            })
         </script>
     </body>
 </html>
