@@ -149,6 +149,9 @@ export class Mixer {
         this.canvas.style.width = `${this.width}px`
         this.canvas.style.height = `${this.height}px`
         this.ctx = this.canvas.getContext('2d')
+        if (this.audioContext?.state === 'suspended') {
+            this.audioContext.resume()
+        }
         this.draw()
 
         const videoTracks = this.canvas.captureStream().getVideoTracks()
