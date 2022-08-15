@@ -1,8 +1,16 @@
 {
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/pages"
+            "source": "/",
+            "destination": "/pages/index.html"
+        },
+        {
+            "source": "/mixer",
+            "destination": "/pages/mixer.html"
+        },
+        {
+            "source": "/recorder",
+            "destination": "/pages/recorder.html"
         }
     ]
 }
