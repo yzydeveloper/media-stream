@@ -15,9 +15,28 @@
             </nav>
         </header>
         <div class="content">
+            <h1>Recorder example</h1>
+            <h2>Record and play</h2>
+            <h3>Live stream</h3>
+            <video id="live-stream" width="720" height="405" muted controls autoplay playsinline></video>
+            <h3>Record stream</h3>
+            <video id="record-stream" width="720" height="405" muted controls autoplay playsinline></video>
         </div>
         <script type="module">
+            import { Recorder } from '@media-stream/recorder'
             import '../../style.css'
+
+            navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            }).then((stream) => {
+                const recorder = new Recorder(stream)
+                const recordVideo = document.querySelector('#record-stream')
+                const liveVideo = document.querySelector('#live-stream')
+                liveVideo.srcObject = stream
+                recorder.attachMedia(recordVideo)
+                recorder.start()
+            })
         </script>
     </body>
 </html>
