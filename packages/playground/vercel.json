@@ -2,15 +2,15 @@
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "pages/index.html"
+            "destination": "/index.html"
         },
         {
             "source": "/mixer",
-            "destination": "pages/mixer.html"
+            "destination": "/mixer.html"
         },
         {
             "source": "/recorder",
-            "destination": "pages/recorder.html"
+            "destination": "/recorder.html"
         }
     ]
 }
