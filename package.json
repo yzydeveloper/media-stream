@@ -1,15 +1,17 @@
 {
   "name": "media-stream",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "pnpm -r --filter . --parallel run build",
-    "dev": "pnpm -r --filter . --parallel run dev"
+    "dev": "pnpm -r --filter . --parallel run dev",
+    "release": "bumpp --commit --push --tag && pnpm -r publish"
   },
   "author": "yzydeveloper",
   "license": "MIT",
   "devDependencies": {
     "@yzydeveloper/eslint-config": "^0.1.4",
+    "bumpp": "^8.2.1",
     "eslint": "^8.11.0",
     "pnpm": "^6.32.3",
     "tsup": "^5.12.1",
