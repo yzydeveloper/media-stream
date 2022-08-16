@@ -1,13 +1,17 @@
 {
     "name": "@media-stream/recorder",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "@media-stream/recorder",
     "author": "yzydeveloper",
     "license": "MIT",
     "main": "src/index.ts",
     "types": "dist/index.d.ts",
     "module": "dist/index.mjs",
+    "files": [
+        "dist"
+    ],
     "scripts": {
+        "prepublishOnly": "pnpm run build",
         "build": "tsup",
         "dev": "tsup --watch"
     }
