@@ -1,11 +1,11 @@
 {
   "name": "media-stream",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "build": "pnpm -r --filter . --parallel run build",
     "dev": "pnpm -r --filter . --parallel run dev",
-    "release": "bumpp --commit --push --tag && pnpm -r publish"
+    "release": "bumpp package.json packages/mixer/package.json packages/recorder/package.json --commit --push --tag && pnpm -r publish"
   },
   "author": "yzydeveloper",
   "license": "MIT",
