@@ -1,6 +1,10 @@
 # Media-Stream
 Contains some interesting things about video streams, video files and Media API, Canvas
 
+## Creator
+
+TODO
+
 ## Mixer
 > Synthesize and crop video streams, which is somewhat similar to the core function of cloud director
 
