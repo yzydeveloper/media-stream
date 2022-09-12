@@ -46,7 +46,7 @@
                 })
                 mixer.start()
                 const video = document.querySelector('#combined-video')
-                video.srcObject = mixer.media
+                video.srcObject = mixer.stream
             }))
 
             // crop-video
@@ -79,7 +79,7 @@
                 })
                 mixer.start()
                 const video = document.querySelector('#crop-video')
-                video.srcObject = mixer.media
+                video.srcObject = mixer.stream
             })
         </script>
     </body>

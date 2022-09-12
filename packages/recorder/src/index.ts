@@ -22,7 +22,7 @@ export class Recorder {
 
     private recorderOptions: RecorderOptions | null = null
 
-    private queue:ArrayBuffer[] = []
+    private queue: ArrayBuffer[] = []
 
     constructor(stream: MediaStream, options?: RecorderOptions) {
         this.setOptions(stream, options)
@@ -52,7 +52,7 @@ export class Recorder {
         if (this.mediaSource) {
             this._media.src = URL.createObjectURL(this.mediaSource)
             this._media.addEventListener('progress', () => {
-                if(this._media?.readyState === 2) {
+                if (this._media?.readyState === 2) {
                     this._media.currentTime += 0.1
                 }
             })
@@ -106,7 +106,7 @@ export class Recorder {
     private sbUpdateEnd() {
         this.isDebug && console.log('[recorder]: source buffer updateend')
         const buffer = this.queue.shift()
-        if(buffer && !this.sourceBuffer?.updating) {
+        if (buffer && !this.sourceBuffer?.updating) {
             this.sourceBuffer?.appendBuffer(buffer)
         }
     }

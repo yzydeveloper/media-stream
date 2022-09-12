@@ -29,7 +29,7 @@ export class Mixer {
 
     public fps = 25
 
-    private streams: StreamItem[] = []
+    private streamList: StreamItem[] = []
 
     public supported: boolean | null = null
 
@@ -45,7 +45,7 @@ export class Mixer {
 
     private gainNode: GainNode | null = null
 
-    public media: MediaStream | null = null
+    public stream: MediaStream | null = null
 
     constructor(options?: MixerOptions) {
         const audioSupport = !!(window.AudioContext && (new AudioContext()).createMediaStreamDestination)
@@ -56,7 +56,7 @@ export class Mixer {
             return
         }
 
-        this.media = new MediaStream()
+        this.stream = new MediaStream()
         this.setOptions(options)
         this.createAudioContext()
     }
@@ -110,12 +110,12 @@ export class Mixer {
             worker.audioSource?.connect(this.audioDestinationNode)
         }
 
-        this.streams.push(worker)
+        this.streamList.push(worker)
         this.sort()
     }
 
     detachStream(stream: MediaStream) {
-        this.streams = this.streams.filter(s => {
+        this.streamList = this.streamList.filter(s => {
             if (s.id === stream.id) {
                 s.element.remove()
                 s.audioSource?.disconnect()
@@ -125,16 +125,16 @@ export class Mixer {
     }
 
     private sort() {
-        this.streams.sort((a, b) => a.z - b.z)
+        this.streamList.sort((a, b) => a.z - b.z)
     }
 
     private draw() {
-        if (!this.streams.length) {
+        if (!this.streamList.length) {
             this.ctx?.clearRect(0, 0, this.width, this.height)
             this.ctx && (this.ctx.fillStyle = '#000000')
             this.ctx?.fillRect(0, 0, this.width, this.height)
         } else {
-            this.streams.forEach(stream => {
+            this.streamList.forEach(stream => {
                 const { element, sx, sy, swidth, sheight, x, y, width, height } = stream
                 this.ctx?.drawImage(element, sx, sy, swidth, sheight, x, y, width, height)
             })
@@ -157,11 +157,11 @@ export class Mixer {
         const videoTracks = this.canvas.captureStream().getVideoTracks()
         const audioTracks = this.audioDestinationNode?.stream.getAudioTracks()
         videoTracks.forEach(track => {
-            this.media?.addTrack(track)
+            this.stream?.addTrack(track)
         })
         if (audioTracks) {
             audioTracks.forEach(track => {
-                this.media?.addTrack(track)
+                this.stream?.addTrack(track)
             })
         }
     }
@@ -170,11 +170,11 @@ export class Mixer {
         this.canvas = null
         this.ctx = null
         this.supported = null
-        this.streams.forEach(s => {
+        this.streamList.forEach(s => {
             s.audioSource?.disconnect()
             s.element.remove()
         })
-        this.streams = []
+        this.streamList = []
         this.audioContext?.close()
         this.audioContext = null
         this.audioDestinationNode?.disconnect()
@@ -182,7 +182,7 @@ export class Mixer {
         this.gainNode?.disconnect()
         this.gainNode = null
 
-        const tracks = this.media?.getTracks()
+        const tracks = this.stream?.getTracks()
         tracks?.forEach(track => track.stop())
 
         if (this.timer) {
