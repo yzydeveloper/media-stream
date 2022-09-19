@@ -166,7 +166,7 @@ export class Mixer {
         }
     }
 
-    stop() {
+    destroy() {
         this.canvas = null
         this.ctx = null
         this.supported = null

@@ -15,6 +15,8 @@ npm i -D @media-stream/mixer
 ```
 ### Usage
 
+For details, see Playground
+
 [Local Mixer Playground](./packages/playground/src/app/mixer/index.html)
 
 [Online Mixer Playground](https://media-stream.vercel.app/mixer)
@@ -27,7 +29,7 @@ const mixer = new Mixer()
 mixer.attachStream(stream)
 mixer.detachStream(stream)
 mixer.start()
-mixer.stop()
+mixer.destroy()
 ```
 
 ## Recorder
@@ -53,4 +55,7 @@ const recorder = new Recorder()
 
 recorder.attachMedia(recordVideo)
 recorder.start()
+recorder.pause()
+recorder.resume()
+recorder.destroy()
 ```
