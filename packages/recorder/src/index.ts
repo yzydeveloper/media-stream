@@ -1,6 +1,5 @@
 export interface RecorderOptions extends MediaRecorderOptions {
     timeslice?: number
-    isDebug?: boolean
 }
 
 export class Recorder {
@@ -26,10 +25,6 @@ export class Recorder {
 
     constructor(stream: MediaStream, options?: RecorderOptions) {
         this.setOptions(stream, options)
-    }
-
-    private get isDebug() {
-        return this.recorderOptions?.isDebug
     }
 
     get blobs() {
@@ -117,21 +112,16 @@ export class Recorder {
         this.sourceBuffer.addEventListener('error', this.onSBUpdateError.bind(this))
     }
 
-    private onSBUpdateStart() {
-        this.isDebug && console.log('[recorder]: source buffer updatestart')
-    }
+    private onSBUpdateStart() { }
 
     private onSBUpdateEnd() {
-        this.isDebug && console.log('[recorder]: source buffer updateend')
         const buffer = this.queue.shift()
         if (buffer && !this.sourceBuffer?.updating) {
             this.sourceBuffer?.appendBuffer(buffer)
         }
     }
 
-    private onSBUpdateError() {
-        this.isDebug && console.log('[recorder]: source buffer error')
-    }
+    private onSBUpdateError() { }
 
     private createMediaSource() {
         this.mediaSource = new MediaSource()
@@ -142,15 +132,10 @@ export class Recorder {
 
     private onMediaSourceOpen() {
         if (!this.mediaSource || !this.mimeType) return
-        this.isDebug && console.log('[recorder]: Media source opened')
         this.createSourceBuffer()
     }
 
-    private onMediaSourceEnded() {
-        this.isDebug && console.log('[recorder]: Media source ended')
-    }
+    private onMediaSourceEnded() { }
 
-    private onMediaSourceClose() {
-        this.isDebug && console.log('[recorder]: Media source close')
-    }
+    private onMediaSourceClose() { }
 }
