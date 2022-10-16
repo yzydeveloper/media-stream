@@ -21,6 +21,8 @@
             <video id="live-stream" width="720" height="405" muted controls autoplay playsinline></video>
             <h3>Record stream</h3>
             <video id="record-stream" width="720" height="405" muted controls autoplay playsinline></video>
+            <h3>Download recording file</h3>
+            <button>Download recording file</button>
         </div>
         <script type="module">
             import { Recorder } from '@media-stream/recorder'
@@ -36,6 +38,10 @@
                 liveVideo.srcObject = stream
                 recorder.attachMedia(recordVideo)
                 recorder.start()
+
+                document.querySelector('button').onclick = () => {
+                    recorder.download()
+                }
             })
         </script>
     </body>

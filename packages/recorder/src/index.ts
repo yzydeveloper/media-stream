@@ -15,8 +15,6 @@ export class Recorder {
 
     private _blobs: Blob[] = []
 
-    private mimeType: string | null = 'video/webm;codecs=opus,vp8'
-
     private recorderOptions: RecorderOptions | null = null
 
     private queue: ArrayBuffer[] = []
@@ -25,6 +23,10 @@ export class Recorder {
 
     constructor(stream: MediaStream, options?: RecorderOptions) {
         this.setOptions(stream, options)
+    }
+
+    get mimeType() {
+        return this.recorderOptions?.mimeType ?? 'video/webm;codecs=vp8,opus'
     }
 
     get blobs() {
@@ -61,6 +63,16 @@ export class Recorder {
 
     resume() {
         this.mediaRecorder?.resume()
+    }
+
+    download(filename: string) {
+        const blob = new Blob(this.blobs, { type: this.mimeType })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename || `${Date.now()}`
+        a.click()
+        URL.revokeObjectURL(a.href)
     }
 
     destroy() {
