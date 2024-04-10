@@ -1,7 +1,6 @@
 import { type MP4Info } from 'mp4box'
 import { Demuxer, type SampleStreamChunk } from './demuxer'
 
-export * from './player'
 export interface DecoderOptions {
     onVideoOutput: VideoFrameOutputCallback
     onAudioOutput: AudioDataOutputCallback
