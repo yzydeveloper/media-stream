@@ -36,6 +36,12 @@ export class Decoder {
         this.onVideoOutput = options.onVideoOutput
         this.onAudioOutput = options.onAudioOutput
         this.demuxer = new Demuxer({
+            onDone: () => {
+                Promise.all([
+                    this.videoDecoder?.flush(),
+                    this.audioDecoder?.flush()
+                ])
+            },
             onChunk: this.onChunk.bind(this)
         })
     }
@@ -54,12 +60,6 @@ export class Decoder {
         }
 
         if(type === 'samples') {
-            // eslint-disable-next-line no-await-in-loop
-            await Promise.all([
-                this.videoDecoder?.flush(),
-                this.audioDecoder?.flush()
-            ])
-
             const { type: sampleType, samples } = data
             for (let i = 0; i < samples.length; i += 1) {
                 const s = samples[i]

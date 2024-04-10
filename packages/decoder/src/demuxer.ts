@@ -79,6 +79,7 @@ export type SampleStreamChunk = {
 
 export interface DemuxerOptions {
     onChunk?: (chunk: SampleStreamChunk) => void
+    onDone?: () => void
 }
 
 /**
@@ -190,6 +191,7 @@ export class Demuxer {
                 // eslint-disable-next-line no-await-in-loop
                 const { value, done } = await this.#reader!.read()
                 if(done) {
+                    this.#options?.onDone?.()
                     stoped = true
                 }
 
